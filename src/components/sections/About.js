@@ -194,10 +194,12 @@ const About = () => {
             {/* SKILL ITEM STARTS */}
             <div className="animated-layer fade-in-up-animation fadeInRight wow">
               <span>
-                <i className="devicon-solidity-plain"></i>
+
+                <img className="devicon-solidity-plain" />
+
 
               </span>
-              <h4>GUBALE</h4>
+              <h4>SOLIDITY</h4>
             </div>
             {/* SKILL ITEM ENDS */}
           </div>

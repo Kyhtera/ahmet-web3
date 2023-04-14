@@ -8,7 +8,7 @@ const Blog = () => {
         <h3>
           <span>
             <span className="animated-layer fade-in-left-animation fadeInUp wow">
-              Latest Posts
+              Web3 Blog
             </span>
           </span>
         </h3>
@@ -27,11 +27,10 @@ const Blog = () => {
               <div className="content">
                 <span className="category">design</span>
                 <span className="title">
-                  How To Publish Content That Ranks On Google
+                  The History of Bitcoin: A Fun and Easy Guide
                 </span>
                 <p>
-                  ncididunt ut labore et dolore magna aliqua. Ut enim aminim
-                  veniam...
+                  In 2008, the enigmatic "Satoshi Nakamoto" published a revolutionary paper titled "Bitcoin: A Peer-to-Peer Electronic Cash System".
                 </p>
                 <div className="meta d-flex align-items-center">
                   <div className="d-flex align-items-center">
