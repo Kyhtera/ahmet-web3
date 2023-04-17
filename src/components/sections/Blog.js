@@ -1,4 +1,6 @@
 import Link from "next/link";
+import BlogCardData from "../../../pages/api/blog-data";
+
 const Blog = () => {
   return (
     <section className="blog main-section flex-column-mobile" id="blog">
@@ -18,97 +20,36 @@ const Blog = () => {
       {/* LATEST POSTS STARTS */}
       <div className="latestposts flex-column-mobile">
         {/* POST ITEM STARTS */}
-        <div className="animated-layer fade-in-right-animation fadeInUp wow">
-          <Link href="/blog-post" legacyBehavior>
-            <a>
-              <span className="img-holder">
-                <img src="assets/blog/blog-post-1.jpg" alt="" />
-              </span>
-              <div className="content">
-                <span className="category">design</span>
-                <span className="title">
-                  The History of Bitcoin: A Fun and Easy Guide
+        {BlogCardData.slice(0, 3).map((card) => (
+          <div className="animated-layer fade-in-right-animation fadeInUp wow">
+            <Link href="/blog-post" legacyBehavior>
+              <a>
+                <span className="img-holder">
+                  <img src={card.imageUrl} alt={card.title} />
                 </span>
-                <p>
-                  In 2008, the enigmatic "Satoshi Nakamoto" published a revolutionary paper titled "Bitcoin: A Peer-to-Peer Electronic Cash System".
-                </p>
-                <div className="meta d-flex align-items-center">
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-calendar" />
-                    <span>9 Apr 2022</span>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-comments" />
-                    <span>17 comments</span>
+                <div className="content">
+                  <span className="category">{card.category}</span>
+                  <span className="title">
+                    {card.title}
+                  </span>
+                  <p>
+                    {card.abstract}
+                  </p>
+                  <div className="meta d-flex align-items-center">
+                    <div className="d-flex align-items-center">
+                      <i className="fa-regular fa-calendar" />
+                      <span>{card.date}</span>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <i className="fa-regular fa-comments" />
+                      <span>{card.commentcount}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </Link>
-        </div>
-        {/* POST ITEM ENDS */}
-        {/* POST ITEM STARTS */}
-        <div className="animated-layer fade-in-right-animation fadeInUp wow">
-          <Link href="/blog-post" legacyBehavior>
-            <a>
-              <span className="img-holder">
-                <img src="assets/blog/blog-post-2.jpg" alt="" />
-              </span>
-              <div className="content">
-                <span className="category">development</span>
-                <span className="title">
-                  How Efficient Site Structure Can Boost SEO
-                </span>
-                <p>
-                  ncididunt ut labore et dolore magna aliqua. Ut enim aminim
-                  veniam...
-                </p>
-                <div className="meta d-flex align-items-center">
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-calendar" />
-                    <span>21 Feb 2022</span>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-comments" />
-                    <span>34 comments</span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </Link>
-        </div>
-        {/* POST ITEM ENDS */}
-        {/* POST ITEM STARTS */}
-        <div className="animated-layer fade-in-right-animation fadeInUp wow">
-          <Link href="/blog-post" legacyBehavior>
-            <a>
-              <span className="img-holder">
-                <img src="assets/blog/blog-post-3.jpg" alt="" />
-              </span>
-              <div className="content">
-                <span className="category">essentials</span>
-                <span className="title">
-                  Change Management for Customer Success
-                </span>
-                <p>
-                  ncididunt ut labore et dolore magna aliqua. Ut enim aminim
-                  veniam...
-                </p>
-                <div className="meta d-flex align-items-center">
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-calendar" />
-                    <span>1 Jan 2022</span>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <i className="fa-regular fa-comments" />
-                    <span>10 comments</span>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </Link>
-        </div>
-        {/* POST ITEM ENDS */}
+              </a>
+            </Link>
+          </div>
+        ))}
       </div>
       {/* LATEST POSTS ENDS */}
     </section>

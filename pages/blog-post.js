@@ -1,9 +1,12 @@
 import { Fragment, useEffect } from "react";
 
+
 const BlogPost = () => {
   useEffect(() => {
     document.querySelector("body").classList.add("blog-page");
   }, []);
+
+
 
 
   return (
@@ -19,7 +22,7 @@ const BlogPost = () => {
           <div className="meta d-flex align-items-center">
             <div className="d-flex align-items-center">
               <i className="fa-regular fa-calendar" />
-              <span>10 JAN 2022</span>
+              <span>date</span>
             </div>
             <div className="d-flex align-items-center">
               <i className="fa-solid fa-tag" />
@@ -33,7 +36,7 @@ const BlogPost = () => {
           {/* META ENDS */}
           {/* CONTENT STARTS */}
           <h3>The History of Bitcoin: A Fun and Easy Guide</h3>
-          <img src="assets/blog/main-post.jpg" alt="Blog image" />
+          <img src="assets/blog/Bitcoin_history .jpeg" alt="Blog image" />
           <div className="post-content">
             <p>
               The Beginning
@@ -73,6 +76,7 @@ const BlogPost = () => {
         {/* ARTICLE ENDS */}
       </div>
     </Fragment >
-  );
+  )
 };
+
 export default BlogPost;
