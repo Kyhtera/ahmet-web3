@@ -195,7 +195,7 @@ const About = () => {
             <div className="animated-layer fade-in-up-animation fadeInRight wow">
               <span>
 
-                <img className="devicon-solidity-plain" />
+                <i className="devicon-solidity-plain" />
 
 
               </span>
