@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/kythera/Documents/Coding Projects/ahmet-web3-main -not -path */node_modules/* -not -path */.next/* -not -path */.DS_Store -type f)",
+      "Bash(curl -s \"https://cdn.prod.website-files.com/64e6091972f5864e5b3e6f9e/css/sonar-music-studio.webflow.shared.a7bd51b2e.min.css\")",
+      "Bash(rm -f src/KytheraHead.js src/utilits.js src/sliderProps.js src/components/Preloader.js src/components/ScrollBar.js src/components/Separator.js src/components/Switcher.js src/components/sections/Home.js src/components/sections/Blog.js src/components/sections/Contact.js src/components/sections/Copyright.js pages/blog-post.js pages/api/hello.js)",
+      "Bash(rm -rf pages/BlogPosts)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
