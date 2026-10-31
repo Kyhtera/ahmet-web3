@@ -6,7 +6,7 @@ export default [
         title: "blockchain history",
         abstract:
             "In 2008, the enigmatic Satoshi Nakamoto published a revolutionary paper titled Bitcoin: A Peer-to-Peer Electronic Cash System",
-        imageUrl: "assets/blog/Bitcoin_history .jpeg",
+        imageUrl: "assets/blog/Bitcoin_History2.jpg",
         commentcount: "10 comments"
     },
     {
@@ -16,7 +16,7 @@ export default [
         title: "blockchain history",
         abstract:
             "In 2008, the enigmatic Satoshi Nakamoto published a revolutionary paper titled Bitcoin: A Peer-to-Peer Electronic Cash System",
-        imageUrl: "assets/blog/Bitcoin_history .jpeg",
+        imageUrl: "assets/blog/Bitcoin_History2.jpg",
         commentcount: "10 comments"
     },
     {
@@ -26,7 +26,7 @@ export default [
         title: "blockchain history",
         abstract:
             "In 2008, the enigmatic Satoshi Nakamoto published a revolutionary paper titled Bitcoin: A Peer-to-Peer Electronic Cash System",
-        imageUrl: "assets/blog/Bitcoin_history .jpeg",
+        imageUrl: "assets/blog/Bitcoin_History2.jpg",
         commentcount: "10 comments"
     },
     {
@@ -36,7 +36,7 @@ export default [
         title: "blockchain history",
         abstract:
             "In 2008, the enigmatic Satoshi Nakamoto published a revolutionary paper titled Bitcoin: A Peer-to-Peer Electronic Cash System",
-        imageUrl: "assets/blog/Bitcoin_history .jpeg",
+        imageUrl: "assets/blog/Bitcoin_History2.jpg",
         commentcount: "10 comments"
     },
     {
@@ -46,7 +46,7 @@ export default [
         title: "blockchain history",
         abstract:
             "In 2008, the enigmatic Satoshi Nakamoto published a revolutionary paper titled Bitcoin: A Peer-to-Peer Electronic Cash System",
-        imageUrl: "assets/blog/Bitcoin_history .jpeg",
+        imageUrl: "assets/blog/Bitcoin_History2.jpg",
         commentcount: "10 comments"
     },
 ]

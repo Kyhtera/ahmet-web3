@@ -1,64 +1,66 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useTranslation } from '@/src/context/LanguageContext';
+
+const letters = 'KYTHERA'.split('');
+const ease = [0.22, 1, 0.36, 1];
 
 export default function Hero() {
-  const ref = useRef(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start start', 'end start'],
-  });
-
-  // Arka plan yazısı scroll'la yukarı daha hızlı çıkar → parallax derinlik hissi
-  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '-40%']);
-  // Fotoğraf daha yavaş hareket eder
-  const photoY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  // Scroll göstergesi kaybolur
-  const scrollOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+  const { t } = useTranslation();
 
   return (
-    <section id="hero" className="hero" ref={ref}>
-      <motion.div
-        className="hero__bg-text"
-        style={{ y: bgY }}
-      >
-        <motion.span
-          className="ghost"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.3 }}
-        >
-          KYT
+    <div className="hero">
+      <div className="hero__top">
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }}>
+          {t.hero.sub}
         </motion.span>
-        <motion.span
-          className="red"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 2, delay: 0.5 }}
-        >
-          HERA
+        <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1, duration: 1 }}>
+          {t.hero.tagline}
         </motion.span>
-      </motion.div>
+      </div>
 
-      <motion.div
-        className="hero__photo"
-        style={{ y: photoY }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <img src="/assets/superman.png" alt="Kythera" />
-      </motion.div>
+      <div className="hero__sun-wrap">
+        <motion.div
+          className="hero__sun"
+          initial={{ scale: 0.6, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.6, delay: 0.2, ease }}
+        />
+      </div>
+
+      <div className="hero__photo">
+        <motion.img
+          src="/assets/superman_neon.webp"
+          alt="Kythera"
+          initial={{ opacity: 0, y: 60 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.7, ease }}
+        />
+      </div>
+
+      <h1 className="hero__word" aria-label="Kythera">
+        {letters.map((l, i) => (
+          <span key={i} className="hero__mask">
+            <motion.span
+              className="hero__letter"
+              initial={{ y: '110%' }}
+              animate={{ y: '0%' }}
+              transition={{ duration: 1.1, delay: 0.3 + i * 0.07, ease }}
+            >
+              {l}
+            </motion.span>
+          </span>
+        ))}
+      </h1>
 
       <motion.div
         className="hero__scroll"
-        style={{ opacity: scrollOpacity }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
+        transition={{ delay: 1.8, duration: 1 }}
       >
-        scroll
+        <span>{t.hero.scroll}</span>
+        <i />
       </motion.div>
-    </section>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useTranslation } from '@/src/context/LanguageContext';
+import SectionHead from '@/src/components/SectionHead';
 
 const videos = [
   { id: 'gR3ANasUp9s', title: 'Kamatero Tepelerinde Bisiklet Turu | Petra Tiyatrosu', category: 'Bisiklet' },
@@ -64,118 +64,54 @@ const videos = [
   { id: '9ROB5NPNAYo', title: 'Stüdyo Çalışması', category: 'Stüdyo' },
 ];
 
-// Döngüsel float konfigürasyonu
-const floatBase = [
-  { rotate: -2.5, delay: 0    },
-  { rotate:  1.5, delay: 0.4  },
-  { rotate: -1,   delay: 0.8  },
-  { rotate:  2,   delay: 0.2  },
-  { rotate: -1.8, delay: 0.6  },
-  { rotate:  1,   delay: 1.0  },
-];
-
-const colOffsets = [0, 30, 15];
-
-// Aktif gösterilecek video sayısı — daha fazlası için artır
+// Ana sayfada gösterilecek video sayısı
 const VISIBLE_COUNT = 6;
+const tilts = [-1.6, 1.1, -0.7, 1.4, -1.2, 0.8];
 
-export default function Videos() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.05 });
+export default function Videos({ idx }) {
   const { t } = useTranslation();
-
   const displayed = videos.slice(0, VISIBLE_COUNT);
 
   return (
-    <section id="videos" className="section">
-      <div className="section__divider" />
-      <div style={{ paddingTop: 'clamp(5rem, 10vw, 9rem)' }}>
-        <motion.p
-          className="section__label"
-          ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+    <div className="videos">
+      <div className="videos__head">
+        <SectionHead idx={idx} label={t.videos.label} title={t.videos.title} />
+        <a
+          href="https://www.youtube.com/@kyhtera"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pill pill--solid"
         >
-          {t.videos.label}
-        </motion.p>
-        <motion.h2
-          className="section__title"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {t.videos.title}
-        </motion.h2>
+          <i className="fa-brands fa-youtube" />
+          {t.videos.allVideos(videos.length)}
+        </a>
+      </div>
 
-        <div className="videos__float-grid">
-          {displayed.map((video, i) => {
-            const col = i % 3;
-            const cfg = floatBase[i % floatBase.length];
-
-            return (
-              <motion.a
-                key={`${video.id}-${i}`}
-                href={`https://www.youtube.com/watch?v=${video.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="video-float-card"
-                style={{
-                  marginTop: col === 0 ? 0 : colOffsets[col],
-                  rotate: cfg.rotate,
-                  animationDelay: `${cfg.delay}s`,
-                }}
-                initial={{ opacity: 0, y: 50, rotate: cfg.rotate - 3 }}
-                animate={isInView ? { opacity: 1, y: 0, rotate: cfg.rotate } : {}}
-                transition={{
-                  duration: 0.9,
-                  delay: 0.05 + i * 0.07,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                whileHover={{
-                  y: -12,
-                  rotate: 0,
-                  scale: 1.03,
-                  zIndex: 10,
-                  transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] },
-                }}
-              >
-                <div className="video-float-card__thumb-wrap">
-                  <img
-                    className="video-float-card__thumb"
-                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                    alt={video.title}
-                    loading="lazy"
-                  />
-                  <div className="video-float-card__overlay">
-                    <div className="video-float-card__play-btn">
-                      <svg viewBox="0 0 24 24" fill="white" width="18" height="18">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-                <div className="video-float-card__info">
-                  <span className="video-float-card__cat">{video.category}</span>
-                  <p className="video-float-card__title">{video.title}</p>
-                </div>
-              </motion.a>
-            );
-          })}
-        </div>
-
-        <div className="videos__cta">
-          <a
-            href="https://www.youtube.com/@kyhtera"
+      <div className="videos__grid">
+        {displayed.map((v, i) => (
+          <motion.a
+            key={v.id}
+            href={`https://www.youtube.com/watch?v=${v.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-outline"
+            className="vcard"
+            style={{ rotate: tilts[i % tilts.length] }}
+            whileHover={{ rotate: 0, y: -8, scale: 1.02 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <i className="fa-brands fa-youtube" />
-            {t.videos.allVideos(videos.length)}
-          </a>
-        </div>
+            <div className="vcard__thumb">
+              <img src={`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} loading="lazy" />
+              <span className="vcard__play">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+              </span>
+            </div>
+            <div className="vcard__info">
+              <span>{v.category}</span>
+              <p>{v.title}</p>
+            </div>
+          </motion.a>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }

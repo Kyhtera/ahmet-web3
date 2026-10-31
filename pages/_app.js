@@ -18,11 +18,13 @@ export default function App({ Component, pageProps }) {
         requestAnimationFrame(raf);
       }
 
+      window.__lenis = lenis;
       requestAnimationFrame(raf);
     });
 
     return () => {
       if (lenis) lenis.destroy();
+      window.__lenis = null;
     };
   }, []);
 

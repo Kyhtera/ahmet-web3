@@ -1,0 +1,6 @@
+# Bir erkeğin günlüğü 1
+
+*4 Mayıs 2014*
+
+Bu aksam bir garipti… Verilen savaşların her zaman dogru olup olmadıgı konusunda kesin bur yargı içerisinde bulunamaz ya insan , iste o yüzden bazen inandığı şeyler uğruna ölen insanlar görürüz bu sebeple onlara uğruna olunecek kadar dogru gelen bazı seyler size saçma gelir…
+İste dedim ya şimdi bu aksam o inandığım seylerden birini yıkmak üzere oldugumu anlıyorum galiba…

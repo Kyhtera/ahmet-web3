@@ -1,78 +1,65 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from '@/src/context/LanguageContext';
 
-const navHrefs = ['#music', '#projects', '#videos', '#drawings', '#blog', '#about'];
+const ids = ['music', 'projects', 'videos', 'drawings', 'blog', 'journal', 'about'];
 
-export default function Header() {
-  const [scrolled, setScrolled] = useState(false);
+export default function Header({ active, tone, onNav }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, toggleLang, t } = useTranslation();
-  const navLinks = navHrefs.map((href, i) => ({ href, label: t.nav[i] }));
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  const handleNavClick = (href) => {
+  const go = (id) => {
     setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    onNav(id);
   };
 
   return (
     <>
       <motion.header
-        className={`header${scrolled ? ' scrolled' : ''}`}
-        initial={{ opacity: 0, y: -20 }}
+        className="header"
+        data-tone={tone}
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Logo — sol */}
         <a
           href="#hero"
           className="header__logo"
-          onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}
+          onClick={(e) => {
+            e.preventDefault();
+            go('hero');
+          }}
         >
-          <img
-            src="/assets/logo.png"
-            alt="Kythera"
-            className="header__logo-img"
-            onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'block'; }}
-          />
-          <span className="header__logo-text" style={{ display: 'none' }}>
-            KYT<span>HERA</span>
-          </span>
+          KYTHERA
         </a>
 
-        {/* Nav — orta */}
         <nav className="header__nav">
-          {navLinks.map((link) => (
+          {ids.map((id, i) => (
             <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
+              key={id}
+              href={`#${id}`}
+              className={active === i + 1 ? 'is-active' : ''}
+              onClick={(e) => {
+                e.preventDefault();
+                go(id);
+              }}
             >
-              {link.label}
+              {t.nav[i]}
             </a>
           ))}
         </nav>
 
-        {/* Sağ taraf — dil toggle + hamburger */}
         <div className="header__right">
           <button className="header__lang" onClick={toggleLang} aria-label="Dil değiştir">
-            <span className={lang === 'tr' ? 'header__lang--active' : ''}>TR</span>
-            <span className="header__lang--sep">/</span>
-            <span className={lang === 'en' ? 'header__lang--active' : ''}>EN</span>
+            <span className={lang === 'tr' ? 'on' : ''}>TR</span>
+            <span>/</span>
+            <span className={lang === 'en' ? 'on' : ''}>EN</span>
           </button>
           <button
-            className={`header__hamburger${menuOpen ? ' open' : ''}`}
+            className={`header__burger${menuOpen ? ' open' : ''}`}
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Menü"
           >
-            <span />
             <span />
             <span />
           </button>
@@ -83,21 +70,25 @@ export default function Header() {
         {menuOpen && (
           <motion.div
             className="mobile-menu"
-            initial={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
-            animate={{ opacity: 1, clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ clipPath: 'inset(0 0 100% 0)' }}
+            animate={{ clipPath: 'inset(0 0 0% 0)' }}
+            exit={{ clipPath: 'inset(0 0 100% 0)' }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            {navLinks.map((link, i) => (
+            {ids.map((id, i) => (
               <motion.a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNavClick(link.href); }}
-                initial={{ opacity: 0, y: 20 }}
+                key={id}
+                href={`#${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  go(id);
+                }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + i * 0.07, duration: 0.5 }}
+                transition={{ delay: 0.15 + i * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
-                {link.label}
+                <small>{String(i + 1).padStart(2, '0')}</small>
+                {t.nav[i]}
               </motion.a>
             ))}
           </motion.div>

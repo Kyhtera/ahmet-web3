@@ -29,7 +29,7 @@ export default function Post({ postData }) {
   return (
     <>
       <Head>
-        <title>{postData.title} — KYTHERA</title>
+        <title>{`${postData.title} — KYTHERA`}</title>
         <meta name="description" content={postData.abstract || postData.title} />
       </Head>
 

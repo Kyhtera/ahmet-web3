@@ -1,0 +1,7 @@
+# Vazgeçmek…
+
+*4 Mayıs 2014*
+
+Vazgeçmek nasıl bir olgudur böyle….
+
+Çoğu zaman hayata geçirebilmek için bir çok duygunu ortaya koyarsın.. Yapamazsın denersin her zaman bir duygun diğerinden üstün gelir. Karar veremezsin. yapamazsın bir türlü. Her türlü durumu gözden geçirirsin . Bundan vazgeçersem ne kaybederim yada ne bulurum.. Neler bulduğundan çok aslında bunun kaybettikten sonra sana nelere malolacağını hesaplarsın kafanda. Hiç bir yere varamazsın sonra..Yine vazgeçersin neyden vazgeçmen gerektiği konusunu düşünmekten. İşte vazgeçmek böyle bir şey. Her zaman yapmak isteyipte yapamadığın ancak hayatın boyunca belki planlayacağın kafanda… Planlamakta yetmez belki sadece planlamaya kendini hazır hissetmelisin önce bunu yapabileceğine kendini inandırmalısın.. Yapamazssın bir süre bırakırsın kendi kendine olsun istersin. Olmaz neden olmadı dersin kendi kendine ‘neden vazgeçemedim’ ?? Neden yapamadığını bilirsin aslında hemde kendineden o kadar eminsindir ki. Hayatının belki en pişman olacağn yada pişman olup olmayacağına da aslında emin olamadığın zamanlarını yaşamaya ramak kala hala vazgeçmemeyi seçersin hayatında.. İşte VAZGEÇMEK budur vazgeçmek aslında sürekli onu düşündüğünden dolayı vazgeçememektir. Hayatın sana sunduğu bu güzelliklerinden vazgeçemediğin için kendini iradesiz ve beş para etmez hissetmek senin hayatta nelerden vazgeçtiğinin aslında en büyük göstergesidir. Ben yapamadım vazgeçemedim… İnsanlar benden vazgeçeçek ama ben vazgeçemeyeceğim galiba.. Yıkıntıların arasında kalacağım belki ama yine de pişman olup olmayacağımı bilemiyeceğim…

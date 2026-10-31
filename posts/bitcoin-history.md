@@ -2,7 +2,7 @@
 title: "The History of Bitcoin"
 date: "2022-06-17"
 category: "Blockchain"
-image: "/assets/blog/Bitcoin_history .jpeg"
+image: "/assets/blog/Bitcoin_History2.jpg"
 slug: "bitcoin-history"
 abstract: "A short overview of Bitcoin's origins and evolution."
 ---
