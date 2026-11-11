@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1d5b47">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sofra">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Çarşamba Sofrası</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231d5b47'/%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23e3a41b' stroke-width='6'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" id="touchIcon" href="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column — the week's host up top, the rotation as a dated queue, then the ledger */
+:root {
+  --bg: #f3f5f1;
+  --surface: #ffffff;
+  --fg: #17221d;
+  --muted: #5d6b64;
+  --line: #dde3dc;
+  --green: #1d5b47;
+  --green-ink: #ffffff;
+  --mustard: #e3a41b;
+  --mustard-soft: #fbefd0;
+  --danger: #b8432f;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --radius: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1613; --surface: #17211c; --fg: #e9efe9; --muted: #9aa8a0; --line: #283530;
+    --green: #3f9b7b; --green-ink: #07130e; --mustard: #f0b93c; --mustard-soft: #3a2f13; --danger: #e0725c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1613; --surface: #17211c; --fg: #e9efe9; --muted: #9aa8a0; --line: #283530;
+  --green: #3f9b7b; --green-ink: #07130e; --mustard: #f0b93c; --mustard-soft: #3a2f13; --danger: #e0725c;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 560px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 48px; display: flex; flex-direction: column; gap: 28px; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 { font-family: var(--display); font-weight: 800; font-size: 1.35rem; margin: 0; letter-spacing: -0.01em; }
+.today { color: var(--muted); font-size: 0.85rem; }
+.label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+
+/* Host card */
+.host { background: var(--green); color: var(--green-ink); border-radius: 20px; padding: 22px 20px 20px; display: flex; flex-direction: column; gap: 18px; }
+.host .when { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+.host .name { font-family: var(--display); font-weight: 800; font-size: clamp(2.2rem, 10vw, 3.3rem); line-height: 1; letter-spacing: -0.02em; text-wrap: balance; margin-top: 6px; }
+.host .note { font-size: 0.9rem; opacity: 0.9; margin-top: 8px; }
+.host .note:empty { display: none; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.actions .wide { grid-column: 1 / -1; }
+button { font: inherit; cursor: pointer; border-radius: 12px; border: 0; padding: 12px 14px; font-weight: 600; }
+button:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--mustard); outline-offset: 2px; }
+button:disabled { opacity: 0.5; cursor: default; }
+.btn-paid { background: var(--mustard); color: #1b1404; font-size: 1rem; }
+.btn-ghost { background: color-mix(in srgb, var(--green-ink) 14%, transparent); color: var(--green-ink); }
+.host.readonly .actions { display: none; }
+
+/* Queue */
+.queue { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.queue li { display: grid; grid-template-columns: 2.2em 1fr auto; align-items: center; gap: 10px; padding: 11px 14px; border-top: 1px solid var(--line); }
+.queue li:first-child { border-top: 0; background: var(--mustard-soft); border-radius: var(--radius) var(--radius) 0 0; }
+.queue .pos { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 600; font-size: 0.85rem; }
+.queue li:first-child .pos { color: var(--fg); }
+.queue .who { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.queue .date { color: var(--muted); font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tally { display: inline-block; margin-left: 8px; font-size: 0.8rem; color: var(--muted); letter-spacing: 0.08em; font-weight: 500; }
+
+/* History */
+.hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.hist li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 2px; border-bottom: 1px dashed var(--line); }
+.hist .d { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 0.88rem; }
+.pill { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; white-space: nowrap; }
+.pill.paid { background: color-mix(in srgb, var(--green) 16%, transparent); color: var(--green); }
+.pill.postponed { background: var(--mustard-soft); color: var(--fg); }
+.pill.skip { background: color-mix(in srgb, var(--muted) 16%, transparent); color: var(--muted); }
+.empty { color: var(--muted); font-size: 0.9rem; padding: 12px 2px; }
+.undo-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+.btn-line { background: transparent; color: var(--fg); border: 1px solid var(--line); padding: 8px 12px; font-size: 0.88rem; }
+.btn-danger { background: var(--danger); color: #fff; padding: 8px 12px; font-size: 0.88rem; }
+
+/* Settings */
+details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 4px 14px; }
+summary { cursor: pointer; font-weight: 600; padding: 10px 0; }
+.settings { display: flex; flex-direction: column; gap: 12px; padding-bottom: 14px; }
+.settings label { font-size: 0.85rem; font-weight: 600; display: flex; flex-direction: column; gap: 6px; }
+select, textarea { font: inherit; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; width: 100%; }
+textarea { min-height: 13em; resize: vertical; }
+.btn-save { background: var(--green); color: var(--green-ink); align-self: flex-start; }
+.hint { color: var(--muted); font-size: 0.8rem; font-weight: 400; }
+.status { font-size: 0.85rem; color: var(--muted); min-height: 1.2em; }
+.status.err { color: var(--danger); }
+.offline { background: var(--mustard-soft); border-radius: var(--radius); padding: 12px 14px; font-size: 0.9rem; }
+@media (prefers-reduced-motion: no-preference) { .host .name { transition: opacity .25s ease; } }
+</style>
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.backup { display: flex; flex-direction: column; gap: 10px; padding-bottom: 14px; }
+.backup-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.nudge { background: var(--mustard-soft); border-radius: var(--radius); padding: 12px 14px; font-size: 0.9rem; display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.nudge[hidden] { display: none; }
+input[type=file] { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Çarşamba Sofrası</h1>
+    <span class="today" id="today"></span>
+  </header>
+
+  <div class="nudge" id="nudge" hidden>
+    <span id="nudgeText">Son yedekten beri yeni kayıtlar var.</span>
+    <button class="btn-line" id="btnNudge">Şimdi yedekle</button>
+  </div>
+
+  <section class="host" id="host" aria-live="polite">
+    <div>
+      <div class="when" id="when">Bu çarşamba ısmarlayan</div>
+      <div class="name" id="hostName">…</div>
+      <div class="note" id="hostNote"></div>
+    </div>
+    <div class="actions">
+      <button class="btn-paid wide" id="btnPaid">Ödedi, sıra sonrakine geçsin</button>
+      <button class="btn-ghost" id="btnPostpone">Gelmedi, haftaya o ısmarlar</button>
+      <button class="btn-ghost" id="btnSkip">Bu hafta buluşmadık</button>
+    </div>
+  </section>
+
+  <section>
+    <p class="label">Sıra ve tarihler</p>
+    <ol class="queue" id="queue"></ol>
+  </section>
+
+  <section>
+    <p class="label">Geçmiş</p>
+    <ul class="hist" id="hist"></ul>
+    <div class="empty" id="histEmpty">Henüz kayıt yok. İlk çarşambadan sonra “Ödedi” butonuna bas, burada görünür.</div>
+    <div class="undo-row" id="undoRow" hidden>
+      <button class="btn-line" id="btnUndo">Son kaydı geri al</button>
+      <button class="btn-danger" id="btnUndoYes" hidden>Evet, sil</button>
+      <button class="btn-line" id="btnUndoNo" hidden>Vazgeç</button>
+    </div>
+  </section>
+
+  <details id="backupBox">
+    <summary>Yedek</summary>
+    <div class="backup">
+      <span class="hint" id="backupInfo">Kayıtlar bu telefonun tarayıcısında durur. Ara ara yedek al, telefon değişirse yedeği geri yükle.</span>
+      <div class="backup-row">
+        <button class="btn-save" id="btnExport">Yedek dosyası al</button>
+        <button class="btn-line" id="btnImport">Yedekten geri yükle</button>
+        <input type="file" id="fileIn" accept="application/json,.json">
+      </div>
+      <div class="undo-row" id="importConfirm" hidden>
+        <span class="hint" id="importText"></span>
+        <button class="btn-danger" id="btnImportYes">Evet, yükle</button>
+        <button class="btn-line" id="btnImportNo">Vazgeç</button>
+      </div>
+    </div>
+  </details>
+
+  <details id="settingsBox">
+    <summary>Ayarlar: kişiler ve sıra</summary>
+    <div class="settings">
+      <label for="curSel">Sıradaki kişi
+        <select id="curSel"></select>
+      </label>
+      <label for="members">Kişiler <span class="hint">Her satıra bir isim. Sıra bu listedeki gibi döner.</span>
+        <textarea id="members" spellcheck="false"></textarea>
+      </label>
+      <button class="btn-save" id="btnSave">Kaydet</button>
+    </div>
+  </details>
+
+  <div class="status" id="status" role="status"></div>
+</div>
+<script>
+(function () {
+  // Başlangıç verisi: ilk açılışta kullanılır, sonra her şey telefonun hafızasında tutulur.
+  const SEED = /*SEED*/{"members": ["Hüseyin T", "Zafer", "Ahmet Lefkada", "Seyit", "Esad", "Alican", "Cem Kaptan", "Ahmet Kythera", "Salih", "Fatih", "Akın"], "current": "Hüseyin T", "history": []}/*SEED*/;
+  const KEY = "carsamba-sofrasi-v1";
+
+  const $ = (id) => document.getElementById(id);
+  const DAY = 86400000;
+  const fmt = (d, opts) => d.toLocaleDateString("tr-TR", opts || { day: "numeric", month: "long" });
+  const iso = (d) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const addDays = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+  const wedOnOrBefore = (d) => addDays(d, -((d.getDay() - 3 + 7) % 7));
+
+  let today = midnight(new Date());
+
+  function valid(s) {
+    return s && Array.isArray(s.members) && s.members.length > 0 && s.members.every((m) => typeof m === "string") &&
+      typeof s.current === "string" && Array.isArray(s.history);
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw) { const s = JSON.parse(raw); if (valid(s)) return s; }
+    } catch (_) {}
+    return JSON.parse(JSON.stringify(SEED));
+  }
+  let state = load();
+  let storageOk = true;
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); storageOk = true; }
+    catch (_) { storageOk = false; setStatus("Kayıt telefona yazılamadı. Gizli sekmede olabilirsin.", true); }
+  }
+  save();
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (_) {}
+
+  function setStatus(msg, err) { const s = $("status"); s.textContent = msg || ""; s.classList.toggle("err", !!err); }
+
+  // Sıradaki kaydın ait olduğu çarşamba.
+  function pendingWed() {
+    const recent = wedOnOrBefore(today);
+    const h = state.history;
+    if (!h.length) return recent;
+    const next = addDays(parse(h[0].date), 7);
+    return next < recent ? recent : next;
+  }
+  function currentIndex() { const i = state.members.indexOf(state.current); return i < 0 ? 0 : i; }
+
+  function render() {
+    today = midnight(new Date());
+    $("today").textContent = fmt(today, { weekday: "long", day: "numeric", month: "long" });
+    const members = state.members;
+    const ci = currentIndex();
+    const host = members[ci];
+    const pw = pendingWed();
+    const diff = Math.round((pw - today) / DAY);
+
+    let when;
+    if (diff === 0) when = "Bugün ısmarlayan";
+    else if (diff < 0) when = "Geçen çarşamba (" + fmt(pw) + ") ısmarlayan";
+    else if (diff <= 7) when = "Bu çarşamba, " + fmt(pw) + ", ısmarlayan";
+    else when = fmt(pw, { weekday: "long", day: "numeric", month: "long" }) + " ısmarlayan";
+    $("when").textContent = when;
+    $("hostName").textContent = host;
+
+    const last = state.history[0];
+    let note = "";
+    if (last && last.status === "postponed" && last.name === host) note = "Geçen hafta gelemedi, sıra hâlâ onda.";
+    if (diff < 0) note = (note ? note + " " : "") + "Bu çarşambanın kaydı girilmemiş.";
+    $("hostNote").textContent = note;
+
+    const paidCount = {};
+    state.history.forEach((h) => { if (h.status === "paid") paidCount[h.name] = (paidCount[h.name] || 0) + 1; });
+
+    const q = $("queue");
+    q.innerHTML = "";
+    for (let i = 0; i < members.length; i++) {
+      const name = members[(ci + i) % members.length];
+      const li = document.createElement("li");
+      const pos = document.createElement("span"); pos.className = "pos"; pos.textContent = String(i + 1);
+      const who = document.createElement("span"); who.className = "who"; who.textContent = name;
+      const n = paidCount[name] || 0;
+      if (n) {
+        const t = document.createElement("span"); t.className = "tally";
+        t.title = n + " kez ısmarladı"; t.textContent = n + "×";
+        who.appendChild(t);
+      }
+      const date = document.createElement("span"); date.className = "date";
+      date.textContent = fmt(addDays(pw, 7 * i));
+      li.append(pos, who, date);
+      q.appendChild(li);
+    }
+    renderHistory();
+    fillSettings();
+    renderBackupInfo();
+  }
+
+  const STATUS_LABEL = { paid: "ısmarladı", postponed: "gelmedi, ertelendi", skip: "buluşma yok" };
+  function renderHistory() {
+    const ul = $("hist");
+    ul.innerHTML = "";
+    state.history.slice(0, 60).forEach((h) => {
+      const li = document.createElement("li");
+      const left = document.createElement("span");
+      if (h.status !== "skip") left.append(document.createTextNode(h.name));
+      const pill = document.createElement("span"); pill.className = "pill " + h.status; pill.textContent = STATUS_LABEL[h.status] || h.status;
+      left.appendChild(pill);
+      const d = document.createElement("span"); d.className = "d"; d.textContent = fmt(parse(h.date), { day: "numeric", month: "short", year: "numeric" });
+      li.append(left, d);
+      ul.appendChild(li);
+    });
+    $("histEmpty").hidden = state.history.length > 0;
+    $("undoRow").hidden = state.history.length === 0;
+  }
+
+  let settingsDirty = false;
+  function fillSettings() {
+    if (settingsDirty) return;
+    $("members").value = state.members.join("\n");
+    fillSelect(state.members, state.current);
+  }
+  function fillSelect(members, current) {
+    const sel = $("curSel");
+    sel.innerHTML = "";
+    members.forEach((m) => { const o = document.createElement("option"); o.value = m; o.textContent = m; sel.appendChild(o); });
+    if (members.includes(current)) sel.value = current;
+  }
+  $("members").addEventListener("input", () => {
+    settingsDirty = true;
+    const list = $("members").value.split("\n").map((s) => s.trim()).filter(Boolean);
+    fillSelect(list, $("curSel").value);
+  });
+  $("curSel").addEventListener("change", () => { settingsDirty = true; });
+
+  function record(status) {
+    const members = state.members;
+    const ci = currentIndex();
+    const host = members[ci];
+    const next = members[(ci + 1) % members.length];
+    state.history.unshift({ id: String(Date.now()), date: iso(pendingWed()), name: host, status, prevCurrent: host, ts: Date.now() });
+    if (status === "paid") state.current = next;
+    state.unsaved = (state.unsaved || 0) + 1;
+    save(); render();
+    setStatus(status === "paid" ? host + " ödedi. Sıradaki: " + next + "." :
+              status === "postponed" ? host + " gelemedi, haftaya yine o ısmarlayacak." : "Bu hafta buluşma yok olarak kaydedildi.");
+  }
+  $("btnPaid").onclick = () => record("paid");
+  $("btnPostpone").onclick = () => record("postponed");
+  $("btnSkip").onclick = () => record("skip");
+
+  function showUndoConfirm(on) { $("btnUndo").hidden = on; $("btnUndoYes").hidden = !on; $("btnUndoNo").hidden = !on; }
+  $("btnUndo").onclick = () => showUndoConfirm(true);
+  $("btnUndoNo").onclick = () => showUndoConfirm(false);
+  $("btnUndoYes").onclick = () => {
+    showUndoConfirm(false);
+    const last = state.history.shift();
+    if (!last) return;
+    if (last.prevCurrent && state.members.includes(last.prevCurrent)) state.current = last.prevCurrent;
+    save(); render();
+    setStatus("Son kayıt silindi.");
+  };
+
+  $("btnSave").onclick = () => {
+    const list = [];
+    $("members").value.split("\n").map((s) => s.trim()).filter(Boolean).forEach((m) => { if (!list.includes(m)) list.push(m); });
+    if (!list.length) { setStatus("En az bir isim yaz.", true); return; }
+    state.members = list;
+    state.current = list.includes($("curSel").value) ? $("curSel").value : list[0];
+    settingsDirty = false;
+    $("settingsBox").open = false;
+    save(); render();
+    setStatus("Kaydedildi. Sıradaki: " + state.current + ".");
+  };
+
+  // Yedek
+  function renderBackupInfo() {
+    const n = state.unsaved || 0;
+    const lb = state.lastBackup ? "Son yedek: " + fmt(new Date(state.lastBackup), { day: "numeric", month: "long", year: "numeric" }) + ". " : "Henüz yedek alınmadı. ";
+    $("backupInfo").textContent = lb + "Kayıtlar bu telefonun tarayıcısında durur; telefon değişirse yedeği geri yükle.";
+    $("nudge").hidden = n < 4;
+    $("nudgeText").textContent = "Son yedekten beri " + n + " yeni kayıt var.";
+  }
+  async function exportBackup() {
+    const data = { app: "carsamba-sofrasi", version: 1, exportedAt: new Date().toISOString(),
+      members: state.members, current: state.current, history: state.history };
+    const name = "sofra-yedek-" + iso(today) + ".json";
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    let done = false;
+    try {
+      const file = new File([blob], name, { type: "application/json" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: "Çarşamba Sofrası yedeği" });
+        done = true;
+      }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    if (!done) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    }
+    state.lastBackup = Date.now(); state.unsaved = 0;
+    save(); renderBackupInfo();
+    setStatus("Yedek hazırlandı: " + name);
+  }
+  $("btnExport").onclick = exportBackup;
+  $("btnNudge").onclick = exportBackup;
+
+  let pendingImport = null;
+  $("btnImport").onclick = () => $("fileIn").click();
+  $("fileIn").onchange = async (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = "";
+    if (!f) return;
+    try {
+      const s = JSON.parse(await f.text());
+      if (!valid(s)) throw new Error("bad");
+      pendingImport = { members: s.members, current: s.current, history: s.history };
+      $("importText").textContent = s.members.length + " kişi ve " + s.history.length + " kayıt yüklenecek. Telefondaki mevcut kayıtların yerini alır.";
+      $("importConfirm").hidden = false;
+    } catch (_) { setStatus("Bu dosya bir Sofra yedeği değil.", true); }
+  };
+  $("btnImportNo").onclick = () => { pendingImport = null; $("importConfirm").hidden = true; };
+  $("btnImportYes").onclick = () => {
+    if (!pendingImport) return;
+    state = Object.assign(pendingImport, { lastBackup: Date.now(), unsaved: 0 });
+    pendingImport = null; $("importConfirm").hidden = true;
+    settingsDirty = false;
+    save(); render();
+    setStatus("Yedek yüklendi.");
+  };
+
+  // Ana ekran ikonu (iOS SVG kabul etmediği için PNG çizilir)
+  try {
+    const c = document.createElement("canvas"); c.width = c.height = 180;
+    const x = c.getContext("2d");
+    x.fillStyle = "#1d5b47"; x.fillRect(0, 0, 180, 180);
+    x.strokeStyle = "#e3a41b"; x.lineWidth = 16; x.beginPath(); x.arc(90, 90, 48, 0, Math.PI * 2); x.stroke();
+    $("touchIcon").href = c.toDataURL("image/png");
+  } catch (_) {}
+
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { state = load(); render(); } });
+  render();
+})();
+</script>
+</body>
+</html>
